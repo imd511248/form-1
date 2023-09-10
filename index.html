@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form-validation</title>
+    <!-- icon section  -->
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+    <!-- link css file -->
+    <link rel="stylesheet" href="style.css">
+    <!-- font aweome link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box" id="register">
+            <h1 id="title">Register</h1>
+            <form action="" class="form-section">
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="name" placeholder="Full name" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="password" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="number" id="number" placeholder="Mob" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="dob" placeholder="DOB" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-person"></i>
+                        <input type="radio" value="Male" name="gender" required>
+                        <label for="Male">Male</label>
+                        <input type="radio" value="Female" name="gender" required>
+                        <label for="Female">Female</label>
+                    </div>
+                </div>
+                <div class="btn-field">
+                    <button type="button" id="signinBtn" onclick="clickToSignUp()">Submit</button>
+                </div>
+                <p class="registerTitle">You already have an account? <a href="#" onclick="signinBox()">Sign in</a></p>
+            </form>
+        </div>
+        <!-- ............................................................................................. -->
+        <div class="form-box" id="login">
+            <h1 id="title">Login</h1>
+            <form action="" class="form-section">
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="userName" placeholder="Full name" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="email" id="userEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="userPassword" placeholder="password" required>
+                    </div>
+                </div>
+                <div class="btn-field">
+                    <button type="button" id="signinBtn" onclick="loginUsers()">Login</button>
+                </div>
+                <p class="registerTitle">Don't have an account? <a href="#" onclick="registerBox()">Click here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        ///////////////////////////////////////// find user details section ///////////////////////
+        function loginUsers() {
+            let data = getDataFromLocalStorage()
+            let userName = document.getElementById("userName").value;
+            let userEmail = document.getElementById("userEmail").value;
+            let userPassword = document.getElementById("userPassword").value;
+            data.map((item) => {
+                if (item.name == userName && item.email && userEmail && item.password == userPassword) {
+                    alert("elcome our page")
+
+                }
+                else {
+                    alert("go to hell")
+                }
+            })
+        }
+        ///////////////////////////////////////// jumping section of form validTION ////////////////
+        function registerBox() {
+            document.getElementById("login").style.display = "none"
+            document.getElementById("register").style.display = "block"
+        }
+        function signinBox() {
+            document.getElementById("register").style.display = "none"
+            document.getElementById("login").style.display = "block"
+        }
+        ////////////////////////////////////////// set data of userDetails in local storage section /
+        function clickToSignUp() {
+            let name = document.getElementById("name").value
+            let number = document.getElementById("number").value
+            let email = document.getElementById("email").value
+            let password = document.getElementById("password").value
+            let dob = document.getElementById("dob").value
+            let gender = document.querySelector('input[name="gender"]:checked').value;
+            // ...................................................................//
+            if (!name || !number || !email || !password || !dob || !gender) {
+                alert("Please fill in all required fields.");
+            } else {
+                const userDetails = {
+                    name: name,
+                    number: number,
+                    email: email,
+                    password: password,
+                    dob: dob,
+                    gender: gender,
+                }
+                setDataInLocalStorage(userDetails)
+                alert("Form submitted successfully!");
+                window.location.reload(true)
+            }
+        }
+        function setDataInLocalStorage(data) {
+            if (getDataFromLocalStorage()) {
+                let existingData = getDataFromLocalStorage();
+                existingData.push(data)
+                localStorage.setItem('user', JSON.stringify(existingData))
+                console.log();
+
+            } else {
+                localStorage.setItem('user', JSON.stringify([data]))
+            }
+        }
+        function getDataFromLocalStorage() {
+            let userDetails = localStorage.getItem("user")
+            return JSON.parse(userDetails)
+        }
+    </script>
+</body>
+
+</html>
